@@ -1,0 +1,22 @@
+{
+  "generatedAt": "2026-02-18T07:58:27.442Z",
+  "source": {
+    "colors": "https://zhongguose.com/colors.json",
+    "images": "https://commons.wikimedia.org/w/api.php"
+  },
+  "totalColors": 526,
+  "hueStats": {
+    "red": 101,
+    "orange": 102,
+    "yellow": 43,
+    "green": 48,
+    "cyan": 34,
+    "blue": 43,
+    "purple": 3,
+    "pink": 65,
+    "brown": 41,
+    "gray": 42,
+    "white": 0,
+    "black": 4
+  }
+}

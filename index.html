@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>中国传统色谱</title>
+    <meta
+      name="description"
+      content="全屏中国传统色大色块图谱，支持按颜色名/拼音/色号检索。"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=Archivo:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-main">
+        <div>
+          <p class="kicker">Chinese Traditional Colors</p>
+          <h1>中国传统色谱</h1>
+        </div>
+        <label class="search-wrap" for="searchInput">
+          <input id="searchInput" type="search" placeholder="颜色名 / 拼音 / #hex / rgb" aria-label="搜索颜色" />
+        </label>
+      </div>
+      <div class="filters" id="hueFilters"></div>
+    </header>
+
+    <main class="wall" id="colorWall"></main>
+
+    <template id="tileTemplate">
+      <article class="tile" tabindex="0">
+        <div class="tile-overlay">
+          <p class="tile-pinyin"></p>
+          <h2 class="tile-name"></h2>
+          <p class="tile-code"></p>
+          <p class="tile-hint">点击复制 HEX</p>
+        </div>
+      </article>
+    </template>
+
+    <script src="app.js" type="module"></script>
+  </body>
+</html>
