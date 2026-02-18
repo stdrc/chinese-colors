@@ -6,7 +6,7 @@
     <title>中国传统色</title>
     <meta
       name="description"
-      content="全屏中国传统色大色块图谱，支持按颜色名/拼音/色号检索。"
+      content="全屏中国传统色大色块图谱，支持色系筛选与来源可追溯的配色板。"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -23,12 +23,16 @@
           <p class="kicker">Chinese Traditional Colors</p>
           <h1>中国传统色</h1>
         </div>
-        <label class="search-wrap" for="searchInput">
-          <input id="searchInput" type="search" placeholder="颜色名 / 拼音 / #hex / rgb" aria-label="搜索颜色" />
-        </label>
       </div>
-      <div class="filters" id="hueFilters"></div>
+      <div class="controls-row">
+        <div class="mode-tabs" id="modeTabs" role="tablist" aria-label="页面视图切换"></div>
+      </div>
+      <div class="browse-controls">
+        <div class="filters" id="hueFilters"></div>
+      </div>
     </header>
+
+    <section class="palette-board" id="paletteBoard" aria-label="经典配色搭配"></section>
 
     <main class="wall" id="colorWall"></main>
 
