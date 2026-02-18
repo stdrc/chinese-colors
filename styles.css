@@ -130,17 +130,12 @@ h1 {
   padding: 0;
   overflow: hidden;
   cursor: pointer;
-  transition: filter 0.2s ease, box-shadow 0.2s ease;
+  transition: box-shadow 0.2s ease;
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.09);
 }
 
 .tile::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(188deg, rgba(0, 0, 0, 0.07), rgba(0, 0, 0, 0.52));
-  z-index: 0;
-  transition: opacity 0.2s ease;
+  content: none;
 }
 
 .tile::after {
@@ -155,8 +150,7 @@ h1 {
 
 .tile:hover,
 .tile:focus-visible {
-  filter: brightness(1.04) saturate(1.05);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 10px 26px rgba(0, 0, 0, 0.34);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.32), 0 10px 26px rgba(0, 0, 0, 0.34);
   z-index: 2;
 }
 
@@ -169,11 +163,6 @@ h1 {
   gap: 4px;
   padding: 12px;
   transition: transform 0.2s ease;
-}
-
-.tile:hover::before,
-.tile:focus-visible::before {
-  opacity: 0.86;
 }
 
 .tile:hover::after,
@@ -229,10 +218,19 @@ h1 {
 }
 
 .empty {
+  grid-column: 1 / -1;
+  min-height: clamp(320px, 48vh, 520px);
   display: grid;
   place-items: center;
-  border: 1px dashed var(--line);
-  color: var(--muted);
+  padding: 16px 12px;
+  text-align: center;
+}
+
+.empty-line {
+  margin: 0;
+  font-size: clamp(16px, 2.1vw, 20px);
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.72);
 }
 
 @media (max-width: 900px) {

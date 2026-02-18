@@ -13,8 +13,8 @@ const hueOrder = [
   'purple',
   'pink',
   'brown',
-  'gray',
   'white',
+  'gray',
   'black',
 ];
 
@@ -121,14 +121,27 @@ function createTile(color) {
   return tile;
 }
 
+function createEmptyState() {
+  const empty = document.createElement('section');
+  empty.className = 'empty';
+
+  const line = document.createElement('p');
+  line.className = 'empty-line';
+  if (state.search.trim()) {
+    line.textContent = `“${state.search.trim()}”没有对应结果`;
+  } else {
+    line.textContent = '没有对应结果';
+  }
+
+  empty.append(line);
+  return empty;
+}
+
 function renderWall() {
   wallEl.innerHTML = '';
 
   if (state.filtered.length === 0) {
-    const empty = document.createElement('section');
-    empty.className = 'empty';
-    empty.innerHTML = '<p>没有匹配到颜色，请换个关键词。</p>';
-    wallEl.append(empty);
+    wallEl.append(createEmptyState());
     return;
   }
 
@@ -188,6 +201,7 @@ async function init() {
 
   const colors = await colorsResp.json();
 
+  // Keep source order from the upstream dataset.
   state.colors = colors;
   state.filtered = colors;
 
