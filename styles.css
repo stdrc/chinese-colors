@@ -198,6 +198,8 @@ h1 {
   overflow: clip;
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.09);
   cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   transition: box-shadow 0.2s ease;
 }
 
@@ -215,11 +217,15 @@ h1 {
 .palette-swatch:hover,
 .palette-swatch:focus-visible {
   z-index: 2;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.36);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.32), 0 10px 26px rgba(0, 0, 0, 0.34);
+}
+
+.palette-swatch:active {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.26), 0 10px 26px rgba(0, 0, 0, 0.28);
 }
 
 .palette-swatch.palette-flash {
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.36), 0 10px 26px rgba(0, 0, 0, 0.34);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.32), 0 10px 26px rgba(0, 0, 0, 0.34);
 }
 
 .palette-role,
@@ -287,6 +293,8 @@ h1 {
   padding: 0;
   overflow: hidden;
   cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   transition: box-shadow 0.2s ease;
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.09);
 }
@@ -309,6 +317,10 @@ h1 {
 .tile:focus-visible {
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.32), 0 10px 26px rgba(0, 0, 0, 0.34);
   z-index: 2;
+}
+
+.tile:active {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.26), 0 10px 26px rgba(0, 0, 0, 0.28);
 }
 
 .tile-overlay {
@@ -528,18 +540,6 @@ body.view-palettes .palette-meta {
     min-height: 0;
   }
 
-  body.view-palettes .palette-swatch:hover,
-  body.view-palettes .palette-swatch:focus-visible,
-  body.view-palettes .palette-swatch.palette-flash {
-    z-index: 0;
-    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.09);
-  }
-
-  body.view-palettes .palette-swatch:hover .palette-swatch-overlay,
-  body.view-palettes .palette-swatch:focus-visible .palette-swatch-overlay {
-    transform: none;
-  }
-
   body.view-palettes .palette-color-name {
     font-size: clamp(24px, 7vw, 34px);
   }
@@ -552,9 +552,6 @@ body.view-palettes .palette-meta {
     font-size: 13px;
   }
 
-  body.view-palettes .palette-hint {
-    display: none;
-  }
 }
 
 @media (max-width: 420px) {

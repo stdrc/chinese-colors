@@ -94,25 +94,39 @@ function normalizeHex(hex) {
 
 async function copyText(text) {
   try {
-    await navigator.clipboard.writeText(text);
-    return true;
-  } catch {
-    const textarea = document.createElement('textarea');
-    textarea.value = text;
-    textarea.setAttribute('readonly', 'true');
-    textarea.style.position = 'fixed';
-    textarea.style.left = '-9999px';
-    document.body.append(textarea);
-    textarea.select();
-    let copied = false;
-    try {
-      copied = document.execCommand('copy');
-    } catch {
-      copied = false;
+    if (navigator.clipboard?.writeText && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return true;
     }
-    textarea.remove();
-    return copied;
+  } catch {
+    // fall through to legacy copy
   }
+
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.setAttribute('readonly', 'true');
+  textarea.style.position = 'fixed';
+  textarea.style.top = '0';
+  textarea.style.left = '0';
+  textarea.style.width = '1px';
+  textarea.style.height = '1px';
+  textarea.style.opacity = '0';
+  textarea.style.pointerEvents = 'none';
+
+  document.body.append(textarea);
+  let copied = false;
+  try {
+    textarea.focus({ preventScroll: true });
+    textarea.select();
+    textarea.setSelectionRange(0, textarea.value.length);
+    copied = document.execCommand('copy');
+  } catch {
+    copied = false;
+  } finally {
+    textarea.remove();
+  }
+
+  return copied;
 }
 
 function contrastTextColor(hex) {
@@ -179,27 +193,38 @@ function filterColors() {
 }
 
 async function copyToClipboard(text, hintEl, tileEl) {
-  const original = hintEl.textContent;
-  tileEl.classList.add('flash');
-  const copied = await copyText(text);
-
-  hintEl.textContent = copied ? '已复制 HEX' : `HEX ${text.toUpperCase()}`;
-
-  setTimeout(() => {
-    hintEl.textContent = original;
-    tileEl.classList.remove('flash');
-  }, 900);
+  return copyWithFeedback({
+    text,
+    hintEl,
+    targetEl: tileEl,
+    flashClass: 'flash',
+  });
 }
 
 async function copyPaletteHex(hex, hintEl, swatchEl) {
-  const original = hintEl.textContent;
-  swatchEl.classList.add('palette-flash');
-  const copied = await copyText(hex);
-  hintEl.textContent = copied ? '已复制 HEX' : `HEX ${hex.toUpperCase()}`;
+  return copyWithFeedback({
+    text: hex,
+    hintEl,
+    targetEl: swatchEl,
+    flashClass: 'palette-flash',
+  });
+}
+
+async function copyWithFeedback({ text, hintEl, targetEl, flashClass }) {
+  const original = hintEl?.textContent || '';
+  targetEl.classList.add(flashClass);
+
+  const copied = await copyText(text);
+  if (hintEl) {
+    hintEl.textContent = copied ? '已复制 HEX' : `HEX ${text.toUpperCase()}`;
+  }
+
   setTimeout(() => {
-    hintEl.textContent = original;
-    swatchEl.classList.remove('palette-flash');
+    if (hintEl) hintEl.textContent = original;
+    targetEl.classList.remove(flashClass);
   }, 900);
+
+  return copied;
 }
 
 function createTile(color) {
@@ -217,6 +242,7 @@ function createTile(color) {
   tileName.textContent = color.name;
   tilePinyin.textContent = color.pinyin;
   tileCode.textContent = `${color.hex.toUpperCase()} · RGB ${color.rgb.join(', ')}`;
+  tile.setAttribute('role', 'button');
   tile.setAttribute('aria-label', `${color.name} ${color.hex}`);
 
   tile.addEventListener('click', () => {
