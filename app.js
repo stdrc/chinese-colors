@@ -4,6 +4,8 @@ const tileTemplate = document.getElementById('tileTemplate');
 const paletteBoardEl = document.getElementById('paletteBoard');
 const modeTabsEl = document.getElementById('modeTabs');
 
+const DATA_URL = './data/colors.json';
+
 const hueOrder = [
   'red',
   'orange',
@@ -465,7 +467,7 @@ function renderHueFilters() {
 async function init() {
   initModeRouting();
 
-  const colorsResp = await fetch('./data/colors-with-examples.json');
+  const colorsResp = await fetch(DATA_URL);
 
   if (!colorsResp.ok) {
     throw new Error('颜色数据加载失败');

@@ -5,8 +5,19 @@ import path from 'node:path';
 const COLORS_URL = 'https://zhongguose.com/colors.json';
 const COMMONS_API = 'https://commons.wikimedia.org/w/api.php';
 const OUTPUT_DIR = path.resolve('data');
-const OUTPUT_FILE = path.join(OUTPUT_DIR, 'colors-with-examples.json');
+const OUTPUT_FILE = path.join(OUTPUT_DIR, 'colors.json');
 const META_FILE = path.join(OUTPUT_DIR, 'source-meta.json');
+
+// 前端实际用到的字段；examples/imageUrl 不参与渲染，故输出时剔除。
+const OUTPUT_KEYS = ['id', 'name', 'pinyin', 'pinyinTone', 'hex', 'rgb', 'cmyk', 'hueGroup', 'hueLabel'];
+
+function toSlim(color) {
+  const slim = {};
+  OUTPUT_KEYS.forEach((key) => {
+    if (color[key] !== undefined) slim[key] = color[key];
+  });
+  return slim;
+}
 
 const HUE_PROFILES = {
   red: { label: '红系', keyword: 'red' },
@@ -246,7 +257,8 @@ async function main() {
     ),
   };
 
-  await fs.writeFile(OUTPUT_FILE, `${JSON.stringify(dataset, null, 2)}\n`, 'utf-8');
+  await fs.writeFile(OUTPUT_FILE, `${JSON.stringify(dataset.map(toSlim))}\n`, 'utf-8');
+
   await fs.writeFile(META_FILE, `${JSON.stringify(meta, null, 2)}\n`, 'utf-8');
 
   process.stdout.write(`\nDone. Colors: ${dataset.length}\n`);
